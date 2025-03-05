@@ -17,6 +17,7 @@ from zakodb.const import (
 from zakodb.exc import NotAZakoDbError
 from zakodb.query import QueryExecutor
 from zakodb.types import (
+    ZakoDbEntry,
     ZakoDbFieldProperty,
     ZakoDbHashedBytes,
     ZakoDbHashMethod,
@@ -151,9 +152,7 @@ class _ZakoDbIO:
             extra_field_name = self.io.read_string()
             extra_field_type = ZakoDbType(self.io.read_int(**ZAKODB_TYPE_INTTYPE))
             extra_field_value = self.read_value(extra_field_type)
-            typed_extra_field = ZakoDbTypedValue(
-                type=extra_field_type, value=extra_field_value
-            )
+            typed_extra_field = ZakoDbTypedValue(type=extra_field_type, value=extra_field_value)
             extra_fields[extra_field_name] = typed_extra_field
 
         metadata = ZakoDbMetadata(
@@ -242,7 +241,7 @@ class _ZakoDbIO:
 
     def write_entry(
         self,
-        entry: dict[str, ZakoDbPythonType],
+        entry: ZakoDbEntry,
         field_props: tuple[ZakoDbFieldProperty, ...],
     ) -> None:
         fields_with_types: list[tuple[ZakoDbPythonType, ZakoDbType]] = []
@@ -258,10 +257,8 @@ class _ZakoDbIO:
         for value, typ in fields_with_types:
             self.write_value_unchecked(value, typ)
 
-    def read_entry(
-        self, field_props: tuple[ZakoDbFieldProperty, ...]
-    ) -> dict[str, ZakoDbPythonType]:
-        fields: dict[str, ZakoDbPythonType] = {}
+    def read_entry(self, field_props: tuple[ZakoDbFieldProperty, ...]) -> ZakoDbEntry:
+        fields: ZakoDbEntry = {}
 
         for field_prop in field_props:
             fields[field_prop.name] = self.read_value(field_prop.type)
@@ -282,9 +279,7 @@ class ZakoDb:
     def metadata(self) -> ZakoDbMetadata:
         return self._metadata
 
-    def __init__(
-        self, io: IO[bytes], metadata: ZakoDbMetadata, data_offset: int
-    ) -> None:
+    def __init__(self, io: IO[bytes], metadata: ZakoDbMetadata, data_offset: int) -> None:
         self._io = _ZakoDbIO(io)
         self._metadata = metadata
         self._data_offset = data_offset
@@ -311,11 +306,11 @@ class ZakoDb:
 
         return ZakoDb(io, metadata, data_offset)
 
-    def append_entry(self, entry: dict[str, ZakoDbPythonType]) -> None:
+    def append_entry(self, entry: ZakoDbEntry) -> None:
         self.io.seek(0, io.SEEK_END)
         self._io.write_entry(entry, self._metadata.field_props)
 
-    def iter_entries(self) -> Generator[dict[str, ZakoDbPythonType], None, None]:
+    def iter_entries(self) -> Generator[ZakoDbEntry, None, None]:
         self.io.seek(self._data_offset)
 
         while True:
@@ -324,7 +319,5 @@ class ZakoDb:
             except EOFError:
                 return
 
-    def find_entry(
-        self, query: QueryExecutor
-    ) -> Generator[dict[str, ZakoDbPythonType], None, None]:
+    def find_entry(self, query: QueryExecutor) -> Generator[ZakoDbEntry, None, None]:
         return (entry for entry in self.iter_entries() if query(entry))

@@ -52,6 +52,8 @@ class ZakoDbType(IntEnum):
 
 ZakoDbPythonType = int | float | bytes | ZakoDbHashedBytes
 
+ZakoDbEntry = dict[str, ZakoDbPythonType]
+
 
 @dataclass(frozen=True, kw_only=True)
 class ZakoDbFieldProperty:
