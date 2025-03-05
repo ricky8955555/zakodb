@@ -17,10 +17,16 @@ xxhash = [
 cityhash = [
     "cityhash==0.4.7",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"zakodb" = ["py.typed"]
+
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
-
 
 [tool.pdm]
 distribution = true
