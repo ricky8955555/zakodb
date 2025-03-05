@@ -34,4 +34,4 @@ def zakodb_hash(data: bytes, method: ZakoDbHashMethod) -> int:
     except KeyError:
         raise NotImplementedError
 
-    return func(data)    
+    return func(data)

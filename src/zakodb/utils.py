@@ -1,5 +1,5 @@
 from zakodb.hasher import zakodb_hash
-from zakodb.types import ZakoDbHashMethod, ZakoDbHashedBytes
+from zakodb.types import ZakoDbHashedBytes, ZakoDbHashMethod
 
 
 def create_hashed_bytes(data: bytes, method: ZakoDbHashMethod) -> ZakoDbHashedBytes:

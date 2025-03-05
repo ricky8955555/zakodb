@@ -114,7 +114,7 @@ class _ZakoDbIO:
 
         if read != ZAKODB_MAGIC:
             raise NotAZakoDbError
-        
+
     def write_magic(self) -> None:
         self.io.write(ZAKODB_MAGIC)
 
@@ -151,7 +151,9 @@ class _ZakoDbIO:
             extra_field_name = self.io.read_string()
             extra_field_type = ZakoDbType(self.io.read_int(**ZAKODB_TYPE_INTTYPE))
             extra_field_value = self.read_value(extra_field_type)
-            typed_extra_field = ZakoDbTypedValue(type=extra_field_type, value=extra_field_value)
+            typed_extra_field = ZakoDbTypedValue(
+                type=extra_field_type, value=extra_field_value
+            )
             extra_fields[extra_field_name] = typed_extra_field
 
         metadata = ZakoDbMetadata(
@@ -239,7 +241,9 @@ class _ZakoDbIO:
                 raise NotImplementedError
 
     def write_entry(
-        self, entry: dict[str, ZakoDbPythonType], field_props: tuple[ZakoDbFieldProperty, ...]
+        self,
+        entry: dict[str, ZakoDbPythonType],
+        field_props: tuple[ZakoDbFieldProperty, ...],
     ) -> None:
         fields_with_types: list[tuple[ZakoDbPythonType, ZakoDbType]] = []
 
@@ -278,7 +282,9 @@ class ZakoDb:
     def metadata(self) -> ZakoDbMetadata:
         return self._metadata
 
-    def __init__(self, io: IO[bytes], metadata: ZakoDbMetadata, data_offset: int) -> None:
+    def __init__(
+        self, io: IO[bytes], metadata: ZakoDbMetadata, data_offset: int
+    ) -> None:
         self._io = _ZakoDbIO(io)
         self._metadata = metadata
         self._data_offset = data_offset
