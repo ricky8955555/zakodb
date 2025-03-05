@@ -170,11 +170,6 @@ class ZakoDb:
         hash = self._io.read_int(**ZAKODB_HASH_INTTYPE)
         content = self._io.read_bytes()
         obj = ZakoDbHashedBytes(hash=hash, content=content)
-        computed = self._hasher.hash(content)
-
-        if hash != computed:
-            raise ValueError("hash validation failed.")
-
         return obj
 
     def _write_value_unchecked(self, value: Any, typ: ZakoDbType) -> None:
