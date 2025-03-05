@@ -5,6 +5,7 @@ ZAKODB_MAGIC = b"z4k0"
 ZAKODB_VERSION_INTTYPE = IntType(length=1, signed=False)
 ZAKODB_BYTES_LENGTH_INTTYPE = IntType(length=2, signed=False)
 ZAKODB_FIELD_COUNT_INTTYPE = IntType(length=1, signed=False)
+ZAKODB_EXTRA_FIELD_COUNT_INTTYPE = IntType(length=1, signed=False)
 ZAKODB_TYPE_INTTYPE = IntType(length=1, signed=False)
 ZAKODB_HASH_METHOD_INTTYPE = IntType(length=1, signed=False)
 ZAKODB_HASH_INTTYPE = IntType(length=8, signed=False)

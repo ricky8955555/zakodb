@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum
 from typing import TypedDict
 
@@ -60,7 +60,14 @@ class ZakoDbFieldProperty:
 
 
 @dataclass(frozen=True, kw_only=True)
+class ZakoDbTypedValue:
+    type: ZakoDbType
+    value: ZakoDbPythonType
+
+
+@dataclass(frozen=True, kw_only=True)
 class ZakoDbMetadata:
     version: int = 1
     hash_method: ZakoDbHashMethod
     field_props: tuple[ZakoDbFieldProperty, ...]
+    extra_fields: dict[str, ZakoDbTypedValue] = field(default_factory=dict)

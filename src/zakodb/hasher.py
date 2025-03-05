@@ -5,10 +5,6 @@ from zakodb.types import ZakoDbHashMethod
 _HashFunc = Callable[[bytes], int]
 
 
-def _not_implemented_hash_func(_: bytes) -> int:
-    raise NotImplementedError
-
-
 _hash_funcs: dict[ZakoDbHashMethod, _HashFunc] = {}
 
 try:
@@ -32,25 +28,10 @@ except ImportError:
     pass
 
 
-class Hasher:
-    _method: ZakoDbHashMethod
+def zakodb_hash(data: bytes, method: ZakoDbHashMethod) -> int:
+    try:
+        func = _hash_funcs[method]
+    except KeyError:
+        raise NotImplementedError
 
-    _hash: _HashFunc
-
-    @property
-    def method(self) -> ZakoDbHashMethod:
-        return self._method
-
-    @staticmethod
-    def _get_hash_func(method: ZakoDbHashMethod) -> _HashFunc:
-        try:
-            return _hash_funcs[method]
-        except KeyError:
-            return _not_implemented_hash_func
-
-    def __init__(self, method: ZakoDbHashMethod) -> None:
-        self._method = method
-        self._hash = self._get_hash_func(method)
-
-    def hash(self, data: bytes) -> int:
-        return self._hash(data)
+    return func(data)    
