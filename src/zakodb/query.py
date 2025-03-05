@@ -40,7 +40,7 @@ class Query:
     ) -> QueryExecutor:
         return QueryExecutor(lambda obj: self._getvar(obj) != other)
 
-    def __contains__(self, lhs: Any) -> QueryExecutor:
+    def contains(self, lhs: Any) -> QueryExecutor:
         return QueryExecutor(lambda obj: lhs in self._getvar(obj))
 
     def __lt__(self, rhs: Any) -> QueryExecutor:
