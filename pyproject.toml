@@ -1,0 +1,26 @@
+[project]
+name = "zakodb"
+version = "0.1.0"
+description = "A lightweight database."
+authors = [
+    {name = "Ricky8955555", email = "rkmiao@duck.com"},
+]
+dependencies = []
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[project.optional-dependencies]
+xxhash = [
+    "xxhash~=3.5.0",
+]
+cityhash = [
+    "cityhash==0.4.7",
+]
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true

@@ -1,0 +1,2 @@
+class NotAZakoDbError(Exception):
+    pass
