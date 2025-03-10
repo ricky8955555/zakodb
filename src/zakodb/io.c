@@ -359,7 +359,7 @@ int zakodb_io_write_uint64(zakodb_io_t* io, uint64_t num) {
     bytes[1] = (uint8_t)((num >> 48) & 0xff);
     bytes[0] = (uint8_t)(num >> 56);
 
-    return zakodb_io_write_raw(io, 4, bytes);
+    return zakodb_io_write_raw(io, 8, bytes);
 }
 
 int zakodb_io_write_float32(zakodb_io_t* io, float num) {
