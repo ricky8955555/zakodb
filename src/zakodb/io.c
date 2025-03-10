@@ -293,7 +293,7 @@ int zakodb_io_write_bytes(zakodb_io_t* io, uint16_t n, const uint8_t* bytes) {
 
 int zakodb_io_write_cstr(zakodb_io_t* io, const char* str) {
     size_t len;
-    int    ret;
+    size_t ret;
 
     len = strlen(str);
     ret = fwrite(str, sizeof(char), len + 1, io->fp);
