@@ -108,6 +108,10 @@ cdef class ZakoDbPrimitiveIO:
     def __dealloc__(self):
         self.close()
 
+    cdef void _check_state(self):
+        if self.c_io == NULL:
+            raise ValueError("I/O operation on closed file.")
+
     def close(self):
         zakodb_io_close(self.c_io)
         self.c_io = NULL
@@ -115,6 +119,8 @@ cdef class ZakoDbPrimitiveIO:
     def read_raw(self, size_t n):
         cdef char* buf = <char*>malloc(n)
         cdef bytes py_bytes
+
+        self._check_state()
 
         try:
             _zakodb_io_check_retval(zakodb_io_read_raw(self.c_io, n, <void*>buf))
@@ -129,6 +135,8 @@ cdef class ZakoDbPrimitiveIO:
         cdef uint8_t* data
         cdef bytes py_bytes
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_bytes(self.c_io, &n, &data))
 
         try:
@@ -142,6 +150,8 @@ cdef class ZakoDbPrimitiveIO:
         cdef char* string
         cdef str py_str
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_cstr(self.c_io, &string))
 
         try:
@@ -154,11 +164,15 @@ cdef class ZakoDbPrimitiveIO:
     def read_int8(self):
         cdef int8_t num
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_int8(self.c_io, &num))
         return num
 
     def read_uint8(self):
         cdef uint8_t num
+
+        self._check_state()
 
         _zakodb_io_check_retval(zakodb_io_read_uint8(self.c_io, &num))
         return num
@@ -166,11 +180,15 @@ cdef class ZakoDbPrimitiveIO:
     def read_int16(self):
         cdef int16_t num
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_int16(self.c_io, &num))
         return num
 
     def read_uint16(self):
         cdef uint16_t num
+
+        self._check_state()
 
         _zakodb_io_check_retval(zakodb_io_read_uint16(self.c_io, &num))
         return num
@@ -178,11 +196,15 @@ cdef class ZakoDbPrimitiveIO:
     def read_int32(self):
         cdef int32_t num
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_int32(self.c_io, &num))
         return num
 
     def read_uint32(self):
         cdef uint32_t num
+
+        self._check_state()
 
         _zakodb_io_check_retval(zakodb_io_read_uint32(self.c_io, &num))
         return num
@@ -190,11 +212,15 @@ cdef class ZakoDbPrimitiveIO:
     def read_int64(self):
         cdef int64_t num
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_int64(self.c_io, &num))
         return num
 
     def read_uint64(self):
         cdef uint64_t num
+
+        self._check_state()
 
         _zakodb_io_check_retval(zakodb_io_read_uint64(self.c_io, &num))
         return num
@@ -202,21 +228,29 @@ cdef class ZakoDbPrimitiveIO:
     def read_float32(self):
         cdef float num
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_float32(self.c_io, &num))
         return num
 
     def read_float64(self):
         cdef double num
 
+        self._check_state()
+
         _zakodb_io_check_retval(zakodb_io_read_float64(self.c_io, &num))
         return num
 
     def write_raw(self, bytes data):
+        self._check_state()
+
         _zakodb_io_check_retval(
             zakodb_io_write_raw(self.c_io, <size_t>len(data), <void*><const char*>data)
         )
 
     def write_bytes(self, bytes data):
+        self._check_state()
+
         n = len(data)
 
         if n > 2 ** 16:
@@ -227,43 +261,58 @@ cdef class ZakoDbPrimitiveIO:
         )
 
     def write_cstr(self, str data):
+        self._check_state()
+
         encoded = data.encode("ascii")
         _zakodb_io_check_retval(zakodb_io_write_cstr(self.c_io, <const char*>encoded))
 
     def write_int8(self, int8_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_int8(self.c_io, num))
 
     def write_uint8(self, uint8_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_uint8(self.c_io, num))
 
     def write_int16(self, int16_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_int16(self.c_io, num))
 
     def write_uint16(self, uint16_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_uint16(self.c_io, num))
 
     def write_int32(self, int32_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_int32(self.c_io, num))
 
     def write_uint32(self, uint32_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_uint32(self.c_io, num))
 
     def write_int64(self, int64_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_int64(self.c_io, num))
 
     def write_uint64(self, uint64_t num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_uint64(self.c_io, num))
 
     def write_float32(self, float num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_float32(self.c_io, num))
 
     def write_float64(self, double num):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_write_float64(self.c_io, num))
 
     def seek(self, long off, int whence):
+        self._check_state()
         _zakodb_io_check_retval(zakodb_io_seek(self.c_io, off, whence))
 
     def tell(self):
+        self._check_state()
+
         ret = zakodb_io_tell(self.c_io)
 
         if ret == -1:
