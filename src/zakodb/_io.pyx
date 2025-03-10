@@ -346,7 +346,7 @@ cdef class ZakoDbIO:
 
         for field_prop in metadata.field_props:
             self.io.write_cstr(field_prop.name)
-            self.io.write_uint8(<uint8_t>field_prop.type)
+            self.write_type(field_prop.type)
 
         extra_field_count = len(metadata.extra_fields)
         self.io.write_uint8(<uint8_t>extra_field_count)
@@ -370,29 +370,29 @@ cdef class ZakoDbIO:
 
     def write_value_unchecked(self, value: Any, typ: ZakoDbType):
         if typ == ZAKODB_TYPE_INT8:
-            self.io.write_int8(value)
+            return self.io.write_int8(value)
         if typ == ZAKODB_TYPE_UINT8:
-            self.io.write_uint8(value)
+            return self.io.write_uint8(value)
         if typ == ZAKODB_TYPE_INT16:
-            self.io.write_int16(value)
+            return self.io.write_int16(value)
         if typ == ZAKODB_TYPE_UINT16:
-            self.io.write_uint16(value)
+            return self.io.write_uint16(value)
         if typ == ZAKODB_TYPE_INT32:
-            self.io.write_int32(value)
+            return self.io.write_int32(value)
         if typ == ZAKODB_TYPE_UINT32:
-            self.io.write_uint32(value)
+            return self.io.write_uint32(value)
         if typ == ZAKODB_TYPE_INT64:
-            self.io.write_int64(value)
+            return self.io.write_int64(value)
         if typ == ZAKODB_TYPE_UINT64:
-            self.io.write_uint64(value)
+            return self.io.write_uint64(value)
         if typ == ZAKODB_TYPE_BYTES:
-            self.io.write_bytes(value)
+            return self.io.write_bytes(value)
         if typ == ZAKODB_TYPE_HASHED_BYTES:
-            self.write_hashed_bytes(value)
+            return self.write_hashed_bytes(value)
         if typ == ZAKODB_TYPE_FLOAT32:
-            self.io.write_float32(value)
+            return self.io.write_float32(value)
         if typ == ZAKODB_TYPE_FLOAT64:
-            self.io.write_float64(value)
+            return self.io.write_float64(value)
 
         raise NotImplementedError
 
