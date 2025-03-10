@@ -1,5 +1,5 @@
 #ifndef __STDC_IEC_559__
-#error The following Programm only supports float operations using the IEEE 754 Standard
+#error The following Program only supports float operations using the IEEE 754 Standard
 #endif
 
 #include "io.h"
