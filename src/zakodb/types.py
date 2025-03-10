@@ -1,11 +1,8 @@
 from dataclasses import dataclass, field
 from enum import IntEnum
-from typing import TypedDict
+from os import PathLike
 
-
-class IntType(TypedDict):
-    length: int
-    signed: bool
+StrOrBytesPath = str | bytes | PathLike[str] | PathLike[bytes]
 
 
 @dataclass(frozen=True, kw_only=True)

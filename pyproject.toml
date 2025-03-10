@@ -5,7 +5,7 @@ description = "A lightweight database."
 authors = [
     {name = "Ricky8955555", email = "rkmiao@duck.com"},
 ]
-dependencies = []
+dependencies = ["cython>=3.0.12"]
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "Apache-2.0"}
@@ -24,9 +24,27 @@ where = ["src"]
 [tool.setuptools.package-data]
 "zakodb" = ["py.typed"]
 
+[tool.setuptools]
+ext-modules = [
+  {name = "zakodb._io", sources = ["src/zakodb/_io.pyx"]}
+]
+
 [build-system]
-requires = ["pdm-backend"]
+requires = ["setuptools", "Cython", "pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm]
 distribution = true
+
+[tool.pdm.build]
+run-setuptools = true
+is-purelib = false
+
+[tool.black]
+line-length = 100
+exclude = ".venv"
+
+[tool.isort]
+line_length = 100
+skip = [".venv"]
+profile = "black"
