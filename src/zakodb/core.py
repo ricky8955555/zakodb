@@ -15,10 +15,6 @@ class ZakoDb:
     def metadata(self) -> ZakoDbMetadata:
         return self._metadata
 
-    @property
-    def underlying(self) -> ZakoDbIO:
-        return self._io
-
     def __init__(self, io: ZakoDbIO, metadata: ZakoDbMetadata, data_offset: int) -> None:
         self._io = io
         self._metadata = metadata
@@ -45,6 +41,9 @@ class ZakoDb:
         data_offset = io.underlying.tell()
 
         return ZakoDb(io, metadata, data_offset)
+
+    def close(self) -> None:
+        self._io.close()
 
     def append_entry(self, entry: ZakoDbEntry) -> None:
         self._io.underlying.seek(0, io.SEEK_END)

@@ -106,6 +106,9 @@ cdef class ZakoDbPrimitiveIO:
         _zakodb_io_check_retval(zakodb_io_open(<const char*>path, &self.c_io))
 
     def __dealloc__(self):
+        self.close()
+
+    def close(self):
         zakodb_io_close(self.c_io)
 
     def read_raw(self, size_t n):
@@ -273,6 +276,9 @@ cdef class ZakoDbIO:
     @property
     def underlying(self):
         return self.io
+
+    def close(self):
+        self.io.close()
 
     def expect_magic(self):
         try:
