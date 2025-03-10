@@ -5,7 +5,7 @@ description = "A lightweight database."
 authors = [
     {name = "Ricky8955555", email = "rkmiao@duck.com"},
 ]
-dependencies = ["cython>=3.0.12"]
+dependencies = []
 requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "Apache-2.0"}
