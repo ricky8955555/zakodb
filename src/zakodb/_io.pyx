@@ -131,7 +131,7 @@ cdef class ZakoDbPrimitiveIO:
         _zakodb_io_check_retval(zakodb_io_read_bytes(self.c_io, &n, &data))
 
         try:
-            py_bytes = data[:n]
+            py_bytes = <char*>data[:n]
         finally:
             zakodb_io_free_buf(<void*>data)
 
@@ -211,7 +211,9 @@ cdef class ZakoDbPrimitiveIO:
         return num
 
     def write_raw(self, bytes data):
-        _zakodb_io_check_retval(zakodb_io_write_raw(self.c_io, <size_t>len(data), <void*>data))
+        _zakodb_io_check_retval(
+            zakodb_io_write_raw(self.c_io, <size_t>len(data), <void*><const char*>data)
+        )
 
     def write_bytes(self, bytes data):
         n = len(data)
@@ -219,7 +221,9 @@ cdef class ZakoDbPrimitiveIO:
         if n > 2 ** 16:
             raise OverflowError
 
-        _zakodb_io_check_retval(zakodb_io_write_bytes(self.c_io, <uint16_t>n, <uint8_t*>data))
+        _zakodb_io_check_retval(
+            zakodb_io_write_bytes(self.c_io, <uint16_t>n, <const uint8_t*><const char*>data)
+        )
 
     def write_cstr(self, str data):
         encoded = data.encode("ascii")
