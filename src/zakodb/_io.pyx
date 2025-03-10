@@ -131,7 +131,7 @@ cdef class ZakoDbPrimitiveIO:
         _zakodb_io_check_retval(zakodb_io_read_bytes(self.c_io, &n, &data))
 
         try:
-            py_bytes = <char*>data[:n]
+            py_bytes = (<char*>data)[:n]
         finally:
             zakodb_io_free_buf(<void*>data)
 
