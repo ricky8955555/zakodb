@@ -228,25 +228,25 @@ cdef class ZakoDbPrimitiveIO:
     def write_int8(self, int8_t num):
         _zakodb_io_check_retval(zakodb_io_write_int8(self.c_io, num))
 
-    def write_uint8(self, int8_t num):
+    def write_uint8(self, uint8_t num):
         _zakodb_io_check_retval(zakodb_io_write_uint8(self.c_io, num))
 
     def write_int16(self, int16_t num):
         _zakodb_io_check_retval(zakodb_io_write_int16(self.c_io, num))
 
-    def write_uint16(self, int16_t num):
+    def write_uint16(self, uint16_t num):
         _zakodb_io_check_retval(zakodb_io_write_uint16(self.c_io, num))
 
     def write_int32(self, int32_t num):
         _zakodb_io_check_retval(zakodb_io_write_int32(self.c_io, num))
 
-    def write_uint32(self, int32_t num):
+    def write_uint32(self, uint32_t num):
         _zakodb_io_check_retval(zakodb_io_write_uint32(self.c_io, num))
 
     def write_int64(self, int64_t num):
         _zakodb_io_check_retval(zakodb_io_write_int64(self.c_io, num))
 
-    def write_uint64(self, int64_t num):
+    def write_uint64(self, uint64_t num):
         _zakodb_io_check_retval(zakodb_io_write_uint64(self.c_io, num))
 
     def write_float32(self, float num):
