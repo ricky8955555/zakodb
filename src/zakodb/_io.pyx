@@ -110,6 +110,7 @@ cdef class ZakoDbPrimitiveIO:
 
     def close(self):
         zakodb_io_close(self.c_io)
+        self.c_io = NULL
 
     def read_raw(self, size_t n):
         cdef char* buf = <char*>malloc(n)
