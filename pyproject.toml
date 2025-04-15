@@ -29,16 +29,16 @@ ext-modules = [
   {name = "zakodb._io", sources = ["src/zakodb/_io.pyx"]}
 ]
 
-[build-system]
-requires = ["setuptools", "Cython", "pdm-backend"]
-build-backend = "pdm.backend"
-
 [tool.pdm]
 distribution = true
 
 [tool.pdm.build]
 run-setuptools = true
 is-purelib = false
+
+[build-system]
+requires = ["setuptools", "Cython", "pdm-backend"]
+build-backend = "pdm.backend"
 
 [tool.black]
 line-length = 100
@@ -48,3 +48,8 @@ exclude = ".venv"
 line_length = 100
 skip = [".venv"]
 profile = "black"
+
+[dependency-groups]
+dev = [
+    "cython>=3.0.12",
+]
